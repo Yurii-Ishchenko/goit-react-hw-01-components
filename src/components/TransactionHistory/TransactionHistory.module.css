@@ -1,0 +1,15 @@
+.transaction {
+  width: 800px;
+  border-collapse: collapse;
+  border: 1px solid grey;
+}
+th {
+  border: 1px solid grey;
+  background-color: blueviolet;
+}
+
+td {
+  border: 1px solid grey;
+  background-color: cadetblue;
+  text-align: center;
+}
