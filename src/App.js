@@ -15,12 +15,16 @@ import initialTodos from './components/test/todos.json';
 import TodoEditor from './components/test/TodoEditor';
 import shortId from 'shortid';
 import Filter from './components/test/Filter';
+import Modal from './components/Backdrop/Backdrop';
 // import Form from './components/test/Form';
+import IconButton from './components/IconButton/IconButton';
+import { ReactComponent as IconBtn } from './Icons/add.svg';
 
 class App extends Component {
   state = {
     todos: initialTodos,
     filter: '',
+    showModal: false,
   };
 
   deleteTodo = todoId => {
@@ -29,9 +33,9 @@ class App extends Component {
     }));
   };
 
-  handleFormSummit = data => {
-    console.log(data);
-  };
+  // handleFormSummit = data => {
+  //   console.log(data);
+  // };
 
   toggleCompleted = todoId => {
     // this.setState(prevState => ({
@@ -54,7 +58,6 @@ class App extends Component {
   };
 
   addTodo = text => {
-    console.log(text);
     const todo = {
       id: shortId.generate(),
       text,
@@ -63,13 +66,34 @@ class App extends Component {
     this.setState(({ todos }) => ({
       todos: [todo, ...todos],
     }));
+    this.toggleModal();
   };
   changeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
   };
+  componentDidMount() {
+    const todos = localStorage.getItem('todos');
+    const parseTodos = JSON.parse(todos);
+
+    if (parseTodos) {
+      this.setState({ todos: parseTodos });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.todos !== this.state.todos) {
+      console.log('обновилось поле todos');
+      localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    }
+  }
+
+  toggleModal = e => {
+    this.setState(state => ({
+      showModal: !state.showModal,
+    }));
+  };
 
   render() {
-    const { todos, filter } = this.state;
+    const { todos, filter, showModal } = this.state;
 
     const completedTodo = todos.reduce(
       (total, todo) => (todo.completed ? total + 1 : total),
@@ -82,9 +106,26 @@ class App extends Component {
 
     return (
       <div>
+        <IconButton onClick={this.toggleModal} aria-label="Добавить туду">
+          <IconBtn width="40" height="40" fill="white" />
+        </IconButton>
+
+        {/* <button type="button" onClick={this.toggleModal}>
+          Открыть модалку
+        </button> */}
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <TodoEditor onSubmit={this.addTodo} />
+            {/* <h1>МАДАЛКА</h1>
+            <p>kjdbkbkfebr,kbvfkbjkbgtdlhnlnhgltkgbtkl</p>
+            <button type="button" onClick={this.toggleModal}>
+              Закрыть модалку
+            </button> */}
+          </Modal>
+        )}
         <p>Общее кол-во: {totalTodos}</p>
         <p>Кол-во выполненых: {completedTodo} </p>
-        <TodoEditor onSubmit={this.addTodo} />
+
         <Filter value={filter} onChange={this.changeFilter} />
         <TodoList
           todos={visibleTodos}

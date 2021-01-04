@@ -12,6 +12,10 @@ export default class TodoEditor extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.onSubmit(this.state.message);
+    this.reset();
+  };
+  reset = () => {
+    this.setState({ message: '' });
   };
 
   render() {
