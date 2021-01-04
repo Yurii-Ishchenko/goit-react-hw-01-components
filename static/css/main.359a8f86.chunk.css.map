@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/components/test/Todo.module.css"],"names":[],"mappings":"AAAA,uBACE,WACF,CAEA,kBACE,YAAa,CACb,qBAAuB,CACvB,6BACF","file":"main.359a8f86.chunk.css","sourcesContent":[".todo_list {\r\n  width: 600px;\r\n}\r\n\r\n.item {\r\n  display: flex;\r\n  border: 1px solid black;\r\n  justify-content: space-between;\r\n}\r\n"]}
